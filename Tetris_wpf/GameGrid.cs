@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Tetris_wpf
 {
-    internal class GameGrid
+    public class GameGrid
     {
         private readonly int[,] grid; //dwuwymiarowa tablica
         public int Rows { get; }
@@ -85,7 +85,6 @@ namespace Tetris_wpf
                 {
                     ClearRow(r);
                     cleared++;
-                    s
                 }
                 else if (cleared > 0)
                 {
