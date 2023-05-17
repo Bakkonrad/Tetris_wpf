@@ -58,5 +58,41 @@ namespace Tetris_wpf
             }
             return true;
         }
+
+        private void ClearRow(int r) //czyści rząd
+        {
+            for (int c = 0; c < Columns; c++)
+            {
+                grid[r, c] = 0;
+            }
+        }
+
+        private void MoveRowDown(int r, int numRows) //przesuwa rząd o numRows w dół gdy pod nim został usuięty
+        {
+            for (int c = 0; c < Columns; c++)
+            {
+                grid[r + numRows, c] = grid[r, c];
+                grid[r, c] = 0;
+            }
+        }
+
+        public int ClearFullRows() //czyści pełne rzędy
+        {
+            int cleared = 0;
+            for (int r = Rows-1; r >= 0; r--)
+            {
+                if (IsRowFull(r))
+                {
+                    ClearRow(r);
+                    cleared++;
+                    s
+                }
+                else if (cleared > 0)
+                {
+                    MoveRowDown(r, cleared);
+                }
+            }
+            return cleared;
+        }
     }
 }
