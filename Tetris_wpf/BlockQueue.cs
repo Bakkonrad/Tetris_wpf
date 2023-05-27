@@ -22,10 +22,28 @@ namespace Tetris_wpf
         private readonly Random random = new Random(); //losownie klocka
 
         public Block NextBlock { get; private set; } //metoda zwracająca następny blok
+
+        public BlockQueue()
+        {
+            NextBlock = RandomBlock(); //losowanie następnego bloku
+        }
         
         private Block RandomBlock()
         {
             return blocks[random.Next(blocks.Length)]; //losowanie bloku
+        }
+
+        public Block GetAndUpdate()
+        {
+            Block block = NextBlock; //przypisanie następnego bloku do zmiennej
+
+            do
+            {
+                NextBlock = RandomBlock(); //losowanie następnego bloku
+            } 
+            while (block.Id == NextBlock.Id); //sprawdzenie czy następny blok nie jest taki sam jak poprzedni
+
+            return block; //zwrócenie bloku
         }
     }
 }
