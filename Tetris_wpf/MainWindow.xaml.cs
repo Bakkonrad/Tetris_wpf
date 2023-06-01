@@ -51,6 +51,7 @@ namespace Tetris_wpf
         private readonly int delayDecrease = 25; //minimalne opóźnienie między spadaniem klocka - zmiana poziomu trudności
 
         private GameState gameState = new GameState();
+        private HighestScore highestScore = new HighestScore();
 
         public MainWindow()
         {
@@ -140,7 +141,8 @@ namespace Tetris_wpf
             DrawBlock(gameState.CurrentBlock);
             DrawNextBlock(gameState.BlockQueue);
             DrawHeldBlock(gameState.HeldBlock);
-            ScoreText.Text = $"Score: {gameState.Score}";
+            ScoreText.Text = $"Wynik: {gameState.Score}";
+            HighestScore.Text = $"Najlepszy wynik: {highestScore.LoadScore()}";
         }
 
         private async Task GameLoop()
@@ -156,7 +158,11 @@ namespace Tetris_wpf
             }
 
             GameOverMenu.Visibility = Visibility.Visible;
-            FinalScoreText.Text = $"Final Score: {gameState.Score}";
+            FinalScoreText.Text = $"Wynik końcowy: {gameState.Score}";
+            if(highestScore.LoadScore() < gameState.Score)
+            {
+                highestScore.SaveScore(gameState.Score); //zapisywanie nowego najlepszego wyniku
+            }
         }
 
         private void Window_KeyDown(object sender, KeyEventArgs e)

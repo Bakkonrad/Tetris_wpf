@@ -35,7 +35,6 @@ namespace Tetris_wpf
         public GameGrid GameGrid { get; }
         public BlockQueue BlockQueue { get; }
         public bool GameOver { get; private set; } //zmienna informująca czy gra się skończyła
-
         public int Score { get; private set; } //zmienna przechowująca wynik
         public Block HeldBlock { get; private set; }
         public bool CanHold { get; private set; } = true; //zmienna informująca czy można zmienić blok

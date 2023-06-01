@@ -5,10 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Tetris_wpf"
         mc:Ignorable="d"
-        Title="Tetris" Height="600" Width="800"
+        Title="Tetris" Height="700" Width="800"
         MinWidth="600" MinHeight="600"
         Foreground="White"
-        FontFamily="Segoe UI Light" FontSize="28"
+        FontFamily="Segoe UI" FontSize="28"
         KeyDown="Window_KeyDown">
     <Grid>
         <Grid.RowDefinitions>
@@ -28,7 +28,7 @@
         <Viewbox Grid.Row="1"
                  Grid.Column="1"
                  Margin="0,0,0,20">
-        <Canvas x:Name="GameCanvas" 
+            <Canvas x:Name="GameCanvas" 
         Grid.Row="1"
                 Grid.Column="1"
                 Background="#101010"
@@ -41,18 +41,42 @@
         <TextBlock x:Name="ScoreText"
                    Grid.Row="0"
                    Grid.Column="1"
-                   Text="Score: "
+                   Text="Wynik: "
                    Margin="0,10"
                    TextAlignment="Center"/>
+
+        <TextBlock x:Name="HighestScore"
+                   Grid.Row="1"
+                   Grid.Column="0"
+                   Margin="20,459,19,20"
+                   TextAlignment="Center"
+                   FontSize="15"
+                   ClipToBounds="True"
+                   VerticalAlignment="Bottom"><Run Language="pl-pl" Text="Najwyższy wynik: "/></TextBlock>
+
+        <TextBlock x:Name="ScoreText2_Copy" Grid.Row="1" Margin="10,417,10,26" TextAlignment="Center" FontSize="10" Grid.Column="2" ClipToBounds="True" VerticalAlignment="Bottom" >
+            <Run Language="pl-pl" Text="Instrukcja gry:" />
+            <LineBreak />
+            <Run Text="← → - sterowanie" />
+            <LineBreak />
+            <Run Text="↑ Z - obrót klocka" />
+            <LineBreak />
+            <Run Text="↓ - opuszczenie klocka o 1 rząd" />
+            <LineBreak />
+            <Run Text="Spacja - Opuszczenie klocka na sam dół" />
+            <LineBreak />
+            <Run Text="C - Przechowanie klocka" />
+        </TextBlock>
+
 
         <StackPanel Grid.Row="1"
                     Grid.Column="0"
                     VerticalAlignment="Center"
                     HorizontalAlignment="Right">
-            <TextBlock Text="Hold"
+            <TextBlock Text="Wstrzymaj"
                        TextAlignment="Center"/>
             <Image x:Name="HoldImage"
-                   Margin="20"
+                   Margin="50"
                    Width="125"/>
         </StackPanel>
 
@@ -63,7 +87,7 @@
             <TextBlock Text="Następny"
                        TextAlignment="Center"/>
             <Image x:Name="NextImage"
-                   Margin="20"
+                   Margin="50"
                    Width="125"/>
         </StackPanel>
 
@@ -74,23 +98,24 @@
               Visibility="Hidden">
             <StackPanel HorizontalAlignment="Center"
                         VerticalAlignment="Center">
-                
-                <TextBlock Text="Game Over"
+
+                <TextBlock Text="Koniec gry!"
                            FontSize="48"
                            TextAlignment="Center"/>
                 <TextBlock x:Name="FinalScoreText"
                            Text="Score: "
                            FontSize="36"
                            TextAlignment="Center"/>
-                
-                <Button Content="Play Again"
+
+                <Button Content="Graj ponownie"
                         Background="LightGreen"
                         Margin="0,20,0,0"
                         Padding="5"
                         Click="PlayAgain_Click"/>
-                </StackPanel>
+            </StackPanel>
         </Grid>
-        
+
+
 
     </Grid>
 </Window>
