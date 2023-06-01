@@ -24,7 +24,7 @@ namespace Tetris_wpf
         public BlockQueue BlockQueue { get; }
         public bool GameOver { get; private set; } //zmienna informująca czy gra się skończyła
 
-        public GameState(int rows, int columns) //konstruktor
+        public GameState() //konstruktor
         {
             GameGrid = new GameGrid(22, 10); //tworzenie planszy
             BlockQueue = new BlockQueue(); //tworzenie kolejki bloków
