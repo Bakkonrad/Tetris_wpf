@@ -33,7 +33,7 @@
                 Grid.Column="1"
                 Background="#101010"
                 Width="250"
-                Height="500"
+                Height="510"
                 ClipToBounds="True"
                 Loaded="GameCanvas_Loaded"/>
         </Viewbox>
@@ -60,7 +60,7 @@
                     Grid.Column="2"
                     VerticalAlignment="Center"
                     HorizontalAlignment="Left">
-            <TextBlock Text="Next"
+            <TextBlock Text="Następny"
                        TextAlignment="Center"/>
             <Image x:Name="NextImage"
                    Margin="20"

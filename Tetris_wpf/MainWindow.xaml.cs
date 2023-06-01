@@ -46,6 +46,9 @@ namespace Tetris_wpf
         };
 
         private readonly Image[,] imageControls;
+        private readonly int maxDelay = 1000; //maksymalne opóźnienie między spadaniem klocka - zmiana poziomu trudności
+        private readonly int minDelay = 75; //minimalne opóźnienie między spadaniem klocka - zmiana poziomu trudności
+        private readonly int delayDecrease = 25; //minimalne opóźnienie między spadaniem klocka - zmiana poziomu trudności
 
         private GameState gameState = new GameState();
 
@@ -69,7 +72,7 @@ namespace Tetris_wpf
                         Width = cellSize,
                         Height = cellSize
                     };
-                    Canvas.SetTop(imageControl, (row - 2) * cellSize);
+                    Canvas.SetTop(imageControl, (row - 2) * cellSize + 10);
                     Canvas.SetLeft(imageControl, column * cellSize);
                     GameCanvas.Children.Add(imageControl);
                     imageControls[row, column] = imageControl;
@@ -85,6 +88,7 @@ namespace Tetris_wpf
                 for(int column = 0; column < grid.Columns; column++)
                 {
                     int id = grid[row, column];
+                    imageControls[row, column].Opacity = 1; // 1 - pełna jasność
                     imageControls[row, column].Source = tileImages[id];
                 }
             }
@@ -94,14 +98,65 @@ namespace Tetris_wpf
         {
             foreach(Position p in block.TitlePositions())
             {
+                imageControls[p.Row, p.Column].Opacity = 1; // 1 - pełna jasność
                 imageControls[p.Row, p.Column].Source = tileImages[block.Id];
             }
         }
 
+        private void DrawNextBlock(BlockQueue blockQueue)
+        {
+            Block next = blockQueue.NextBlock;
+            NextImage.Source = blockImages[next.Id];
+        }
+
+        private void DrawHeldBlock(Block heldBlock)
+        {
+            if(heldBlock == null)
+            {
+                HoldImage.Source = blockImages[0];
+            }
+            else
+            {
+                HoldImage.Source = blockImages[heldBlock.Id];
+            }
+        }
+
+        private void DrawGhostBlock(Block block) // rysuje ghost bloku, który spadnie
+        {
+            int dropDistance = gameState.BlockDropDistance();
+
+            foreach(Position p in block.TitlePositions())
+            {
+                imageControls[p.Row + dropDistance, p.Column].Opacity = 0.25; //0.25 - ćwiartka jasności
+                imageControls[p.Row + dropDistance, p.Column].Source = tileImages[block.Id];
+            }
+        }
+
+
         private void Draw(GameState gameState)
         {
             DrawGrid(gameState.GameGrid);
+            DrawGhostBlock(gameState.CurrentBlock);
             DrawBlock(gameState.CurrentBlock);
+            DrawNextBlock(gameState.BlockQueue);
+            DrawHeldBlock(gameState.HeldBlock);
+            ScoreText.Text = $"Score: {gameState.Score}";
+        }
+
+        private async Task GameLoop()
+        {
+            Draw(gameState);
+
+            while(!gameState.GameOver)
+            {
+                int delay = Math.Max(minDelay, maxDelay - (gameState.Score * delayDecrease)); //zmiana opóźninia w zależności od wyniku - zmiana poziomu trudności
+                await Task.Delay(500);
+                gameState.MoveBlockDown();
+                Draw(gameState);
+            }
+
+            GameOverMenu.Visibility = Visibility.Visible;
+            FinalScoreText.Text = $"Final Score: {gameState.Score}";
         }
 
         private void Window_KeyDown(object sender, KeyEventArgs e)
@@ -111,15 +166,46 @@ namespace Tetris_wpf
                 return;
             }
 
+            switch(e.Key)
+            {
+                case Key.Left:
+                    gameState.MoveBlockLeft();
+                    break;
+                case Key.Right:
+                    gameState.MoveBlockRight();
+                    break;
+                case Key.Up:
+                    gameState.RotateBlockCW();
+                    break;
+                case Key.Down:
+                    gameState.MoveBlockDown();
+                    break;
+                case Key.Z:
+                    gameState.RotateBlockCCW();
+                    break;
+                case Key.C:
+                    gameState.HoldBlock();
+                    break;
+                case Key.Space:
+                    gameState.DropBlock();
+                    break;
+                default: //przycisk, który nie jest obsługiwany
+                    return;
+            }
+
+            Draw(gameState); //wykonuje się tylko wtedy, gdy wyjdzie ze switcha - dla obsługiwanych przycisków
         }
 
-        private void GameCanvas_Loaded(object sender, RoutedEventArgs e)
+        private async void GameCanvas_Loaded(object sender, RoutedEventArgs e)
         {
-            Draw(gameState);
+            await GameLoop();
         }
 
-        private void PlayAgain_Click(object sender, RoutedEventArgs e)
+        private async void PlayAgain_Click(object sender, RoutedEventArgs e)
         {
+            gameState = new GameState();
+            GameOverMenu.Visibility = Visibility.Hidden;
+            await GameLoop();
         }
 
 

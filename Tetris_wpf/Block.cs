@@ -12,7 +12,7 @@ namespace Tetris_wpf
         protected abstract Position StartOffset { get; } 
         public abstract int Id { get; } 
 
-        private int rotationState = 0; //obecny obrót klocka
+        private int rotationState; //obecny obrót klocka
         private Position offset; //obecny offset klocka
 
         public Block()
