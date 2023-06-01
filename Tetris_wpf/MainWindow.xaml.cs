@@ -59,58 +59,58 @@ namespace Tetris_wpf
             imageControls = SetupGameCanvas(gameState.GameGrid);
         }
 
-        private Image[,] SetupGameCanvas(GameGrid grid)
+        private Image[,] SetupGameCanvas(GameGrid grid) // ustawia siatkę gry 
         {
-            Image[,] imageControls = new Image[grid.Rows, grid.Columns];
-            int cellSize = 25;
+            Image[,] imageControls = new Image[grid.Rows, grid.Columns]; // tablica obrazków
+            int cellSize = 25; // rozmiar kafelka
 
-            for (int row = 0; row < grid.Rows; row++)
+            for (int row = 0; row < grid.Rows; row++) 
             {
                 for (int column = 0; column < grid.Columns; column++)
                 {
-                    Image imageControl = new Image
+                    Image imageControl = new Image 
                     {
                         Width = cellSize,
                         Height = cellSize
                     };
-                    Canvas.SetTop(imageControl, (row - 2) * cellSize + 10);
+                    Canvas.SetTop(imageControl, (row - 2) * cellSize + 10); // 10 - kawałek ukrytego wiersza aby było lepiej widać
                     Canvas.SetLeft(imageControl, column * cellSize);
-                    GameCanvas.Children.Add(imageControl);
-                    imageControls[row, column] = imageControl;
+                    GameCanvas.Children.Add(imageControl); 
+                    imageControls[row, column] = imageControl; 
                 }
             }
             return imageControls;
         }
 
-        private void DrawGrid(GameGrid grid) 
+        private void DrawGrid(GameGrid grid) // rysuje siatkę
         {
             for(int row = 2; row < grid.Rows; row++)
             {
                 for(int column = 0; column < grid.Columns; column++)
                 {
-                    int id = grid[row, column];
+                    int id = grid[row, column]; // pobiera id kafelka
                     imageControls[row, column].Opacity = 1; // 1 - pełna jasność
-                    imageControls[row, column].Source = tileImages[id];
+                    imageControls[row, column].Source = tileImages[id]; //ustawia kolor kafelka
                 }
             }
         }
 
-        private void DrawBlock(Block block)
+        private void DrawBlock(Block block) // rysuje blok
         {
             foreach(Position p in block.TitlePositions())
             {
                 imageControls[p.Row, p.Column].Opacity = 1; // 1 - pełna jasność
-                imageControls[p.Row, p.Column].Source = tileImages[block.Id];
+                imageControls[p.Row, p.Column].Source = tileImages[block.Id]; //ustawia kolor bloku
             }
         }
 
-        private void DrawNextBlock(BlockQueue blockQueue)
+        private void DrawNextBlock(BlockQueue blockQueue) // rysuje następny blok
         {
             Block next = blockQueue.NextBlock;
             NextImage.Source = blockImages[next.Id];
         }
 
-        private void DrawHeldBlock(Block heldBlock)
+        private void DrawHeldBlock(Block heldBlock) // rysuje blok w funkcji hold
         {
             if(heldBlock == null)
             {
@@ -134,10 +134,10 @@ namespace Tetris_wpf
         }
 
 
-        private void Draw(GameState gameState)
+        private void Draw(GameState gameState) // rysuje wszystko
         {
             DrawGrid(gameState.GameGrid);
-            DrawGhostBlock(gameState.CurrentBlock);
+            DrawGhostBlock(gameState.CurrentBlock); // rysuje ghost bloku
             DrawBlock(gameState.CurrentBlock);
             DrawNextBlock(gameState.BlockQueue);
             DrawHeldBlock(gameState.HeldBlock);
@@ -145,9 +145,9 @@ namespace Tetris_wpf
             HighestScore.Text = $"Najlepszy wynik: {highestScore.LoadScore()}";
         }
 
-        private async Task GameLoop()
+        private async Task GameLoop() // pętla gry
         {
-            Draw(gameState);
+            Draw(gameState); // rysuje wszystko
 
             while(!gameState.GameOver)
             {
@@ -165,9 +165,9 @@ namespace Tetris_wpf
             }
         }
 
-        private void Window_KeyDown(object sender, KeyEventArgs e)
+        private void Window_KeyDown(object sender, KeyEventArgs e) // obsługa przycisków
         {
-            if(gameState.GameOver)
+            if(gameState.GameOver) // jeśli gra się skończyła to nie obsługuje przycisków
             {
                 return;
             }
@@ -181,13 +181,13 @@ namespace Tetris_wpf
                     gameState.MoveBlockRight();
                     break;
                 case Key.Up:
-                    gameState.RotateBlockCW();
+                    gameState.RotateBlockCW(); //CW - clockwise
                     break;
                 case Key.Down:
                     gameState.MoveBlockDown();
                     break;
                 case Key.Z:
-                    gameState.RotateBlockCCW();
+                    gameState.RotateBlockCCW(); //CCW - counter clockwise
                     break;
                 case Key.C:
                     gameState.HoldBlock();
@@ -202,16 +202,16 @@ namespace Tetris_wpf
             Draw(gameState); //wykonuje się tylko wtedy, gdy wyjdzie ze switcha - dla obsługiwanych przycisków
         }
 
-        private async void GameCanvas_Loaded(object sender, RoutedEventArgs e)
+        private async void GameCanvas_Loaded(object sender, RoutedEventArgs e) // ładowanie gry
         {
-            await GameLoop();
+            await GameLoop(); //pętla gry
         }
 
-        private async void PlayAgain_Click(object sender, RoutedEventArgs e)
+        private async void PlayAgain_Click(object sender, RoutedEventArgs e) // przycisk "zagraj ponownie"
         {
             gameState = new GameState();
             GameOverMenu.Visibility = Visibility.Hidden;
-            await GameLoop();
+            await GameLoop();  //pętla gry
         }
 
 

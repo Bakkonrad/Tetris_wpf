@@ -5,11 +5,13 @@
     <TargetFramework>net6.0-windows</TargetFramework>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
-    <ApplicationIcon>Assets\Icon.ico</ApplicationIcon>
+    <ApplicationIcon>Assets\ikona.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Assets\91654.jpg" />
     <None Remove="Assets\Background.png" />
+    <None Remove="Assets\background_im.png" />
     <None Remove="Assets\Block-Empty.png" />
     <None Remove="Assets\Block-I.png" />
     <None Remove="Assets\Block-J.png" />
@@ -27,10 +29,12 @@
     <None Remove="Assets\TilePurple.png" />
     <None Remove="Assets\TileRed.png" />
     <None Remove="Assets\TileYellow.png" />
+    <None Remove="Assets\zdj.jpg" />
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="Assets\Icon.ico" />
+    <Resource Include="Assets\91654.jpg" />
+    <Resource Include="Assets\ikona.ico" />
   </ItemGroup>
 
   <ItemGroup>
