@@ -151,7 +151,7 @@ namespace Tetris_wpf
             }
         }
 
-        private int TileDropDistance(Position p) //zwraca odległość o jaką można opuścić blok
+        private int TileDropDistance(Position p) //zwraca odległość o jaką można opuścić część bloku
         {
             int drop = 0;
 
@@ -162,7 +162,7 @@ namespace Tetris_wpf
             return drop;
         }
 
-        public int BlockDropDistance()
+        public int BlockDropDistance() //zwraca najmniejszą odległość o jaką można opuścić blok
         {
             int drop = GameGrid.Rows;
 

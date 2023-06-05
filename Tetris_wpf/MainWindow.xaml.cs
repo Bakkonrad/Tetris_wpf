@@ -50,6 +50,7 @@ namespace Tetris_wpf
         private readonly int minDelay = 75; //minimalne opóźnienie między spadaniem klocka - zmiana poziomu trudności
         private readonly int delayDecrease = 25; //minimalne opóźnienie między spadaniem klocka - zmiana poziomu trudności
 
+
         private GameState gameState = new GameState();
         private HighestScore highestScore = new HighestScore();
 
@@ -62,7 +63,7 @@ namespace Tetris_wpf
         private Image[,] SetupGameCanvas(GameGrid grid) // ustawia siatkę gry 
         {
             Image[,] imageControls = new Image[grid.Rows, grid.Columns]; // tablica obrazków
-            int cellSize = 25; // rozmiar kafelka
+            int cellSize = 25; // rozmiar kafelka w pikselach
 
             for (int row = 0; row < grid.Rows; row++) 
             {
@@ -142,7 +143,7 @@ namespace Tetris_wpf
             DrawNextBlock(gameState.BlockQueue);
             DrawHeldBlock(gameState.HeldBlock);
             ScoreText.Text = $"Wynik: {gameState.Score}";
-            HighestScore.Text = $"Najlepszy wynik: {highestScore.LoadScore()}";
+            HighestScore.Text = $"Najlepszy wynik: {highestScore.LoadScore()}\n\n";
         }
 
         private async Task GameLoop() // pętla gry
